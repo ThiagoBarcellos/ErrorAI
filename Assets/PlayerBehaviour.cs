@@ -8,6 +8,9 @@ public class PlayerBehaviour : NetworkBehaviour {
 	private bool layerone = true;
 	private bool layertwo = false;
 	private int changelayer = 0;
+	public static bool turn = false;
+	public static int changeside = 0;
+	public static float speed = 1f;
 	private bool CanJump = false;
 	public Rigidbody rb;
 
@@ -15,7 +18,6 @@ public class PlayerBehaviour : NetworkBehaviour {
 		rb = gameObject.GetComponent<Rigidbody> ();
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		/*if (!isLocalPlayer) {
 			return;
@@ -27,14 +29,24 @@ public class PlayerBehaviour : NetworkBehaviour {
 	#region movement
 	void movement()
 	{
-		var x = Input.GetAxis ("Horizontal") * Time.deltaTime;
-		/*if (x > 0) {
-			transform.Rotate (90f, 0, 0);
+		var x = Input.GetAxis ("Horizontal") * Time.deltaTime * speed;
+
+		if (x > 0 && changeside == 0) {
+			turn = true;
+			changeside = 1;
+			speed = 1f;
 		}
-		if( x < 0) 
-		{
-			transform.Rotate (-90f, 0, 0);
-		}*/
+		else if (x < 0 && changeside == 2) {
+			turn = false;
+			changeside = 1;
+			speed = 1f;
+		}
+		else {
+			turn = true;
+			changeside = 0;
+			speed = 0;
+		}
+
 		transform.Translate (x, 0, 0);	
 
 		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0) {
