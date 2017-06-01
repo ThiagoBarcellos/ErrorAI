@@ -9,10 +9,11 @@ public class PlayerBehaviour : NetworkBehaviour {
 	private bool layertwo = false;
 	private int changelayer = 0;
 	public static bool turn = false;
-	public static int changeside = 0;
-	public static float speed = 1f;
+	public static bool changestate = false;
 	private bool CanJump = false;
 	public Rigidbody rb;
+	public GameObject bulletPrefab;
+	public Transform bulletSpawn;
 
 	void Start () {
 		rb = gameObject.GetComponent<Rigidbody> ();
@@ -24,27 +25,27 @@ public class PlayerBehaviour : NetworkBehaviour {
 		}*/
 
 		movement ();
+		if (Input.GetKeyUp (KeyCode.Q)) {
+			CmdFire ();
+		}
 	}
 
 	#region movement
 	void movement()
 	{
-		var x = Input.GetAxis ("Horizontal") * Time.deltaTime * speed;
+		var x = Input.GetAxis ("Horizontal") * Time.deltaTime;
 
-		if (x > 0 && changeside == 0) {
+		if (x > 0 && !changestate) {
 			turn = true;
-			changeside = 1;
-			speed = 1f;
+			changestate = true;
 		}
-		else if (x < 0 && changeside == 2) {
+		else if (x < 0 && !changestate) {
 			turn = false;
-			changeside = 1;
-			speed = 1f;
+			changestate = true;
 		}
 		else {
 			turn = true;
-			changeside = 0;
-			speed = 0;
+			changestate = false;
 		}
 
 		transform.Translate (x, 0, 0);	
@@ -84,6 +85,21 @@ public class PlayerBehaviour : NetworkBehaviour {
 	{
 		CanJump = false;		
 		Debug.Log ("Saiu");
+	}
+
+	void CmdFire()
+	{
+		// Create the Bullet from the Bullet Prefab
+		var bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+
+		// Add velocity to the bullet
+		bullet.GetComponent<Rigidbody>().velocity = bullet.transform.right * -6;
+
+		// Spawn the bullet on the Clients
+		//NetworkServer.Spawn(bullet);
+
+		// Destroy the bullet after 2 seconds
+		Destroy(bullet, 2.0f);
 	}
 
 	#endregion

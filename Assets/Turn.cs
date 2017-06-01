@@ -10,13 +10,16 @@ public class Turn : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (PlayerBehaviour.turn && PlayerBehaviour.changeside == 1) {
-			transform.Rotate (0, 180f, 0);
-			PlayerBehaviour.changeside = 2;
-		}
-		if (!PlayerBehaviour.turn && PlayerBehaviour.changeside == 1) {
-			transform.Rotate (0, -180f, 0);
-			PlayerBehaviour.changeside = 0;
+
+		if (PlayerBehaviour.changestate) {
+			if (PlayerBehaviour.turn) {
+				transform.Rotate (0, 180f, 0);
+				PlayerBehaviour.changestate = false;
+			}
+			if (!PlayerBehaviour.turn) {
+				transform.Rotate (0, -180f, 0);
+				PlayerBehaviour.changestate = false;
+			}
 		}
 	}
 }
