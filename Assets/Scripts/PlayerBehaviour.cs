@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Threading;
 
 public class PlayerBehaviour : NetworkBehaviour {
 
@@ -16,10 +17,11 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
 	public int speed = -6;
-	//public float andando = -1f;
+
+	public bool pulando = false;
+	public float walkSpeed;
 	public bool atirando = false;
 	public Animator anim;
-	public bool pulou = false;
 
 	void Start () {
 		this.gameObject.transform.position = SpawnPoint1.transform.position;
@@ -27,51 +29,45 @@ public class PlayerBehaviour : NetworkBehaviour {
 		esquerda = true;
 		anim.GetComponent<Animator> ();
 	}
+
 	
 	void Update () {
 		/*if (!isLocalPlayer) {
 			return;
 		}*/
-
-		//anim.SetFloat("Andando", andando);
-		anim.SetBool("Pulando", pulou );
-		//anim.SetBool ("Atirando", atirando);
-
-
+		anim.SetBool ("atirando", atirando);
+		anim.SetBool ("pulou", pulando);
 		Cmdmovement ();
 		atirando = false;
 		if (Input.GetMouseButtonUp(0)) {
-			CmdFire ();
+			CmdFire ();	
 
 		}
 
 	}
-
-
+		
 	#region movement
 	void Cmdmovement()
 	{
-		var x = Input.GetAxis ("Horizontal") * Time.deltaTime;
-
-		//andando = 1f;
+		var x = Input.GetAxis ("Horizontal");
+		anim.SetFloat ("speed", Mathf.Abs (x));
+		rb.velocity = new Vector3 (x * -walkSpeed, rb.velocity.y, 0);
 
 		if (x > 0f && esquerda) {
 			Flip ();
 			speed = 6;
-			//Debug.Log(speed);
 			turn = true;
 		}
 
 		else if (x < 0f && !esquerda) {
 			Flip ();
 			speed = -6;
-			//Debug.Log(speed);
 			turn = false;
 		}
 
 
 			
-		transform.Translate (0, 0, x);	
+		//transform.Translate (0, 0, x);	
 
 
 		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0 || Input.GetKeyUp(KeyCode.UpArrow) && layertwo == false && layerone == true && changelayer == 0) {
@@ -86,11 +82,9 @@ public class PlayerBehaviour : NetworkBehaviour {
 		} 
 
 		if (Input.GetKeyUp (KeyCode.Space) && CanJump == true) {
-			Debug.Log ("pulou");
 			rb.AddForce (Vector3.up * 4f, ForceMode.Impulse);
-			pulou = true;
+			pulando = true;
 		}
-		pulou = false;
 
 		while (layertwo && layerone == false && changelayer == 1) {
 			this.transform.Translate (0.8f, 0, 0);
@@ -113,11 +107,12 @@ public class PlayerBehaviour : NetworkBehaviour {
 	void OnTriggerEnter(Collider coll)
 	{
 		CanJump = true;
+		pulando = false;
 		//Debug.Log ("Chão");
 	}
 	void OnTriggerExit(Collider coll)
 	{
-		CanJump = false;		
+		CanJump = false;
 		//Debug.Log ("Saiu");
 	}
 
@@ -134,7 +129,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 
 		// Destroy the bullet after 2 seconds
 		Destroy(bullet, 2.0f);
-		//atirando = true;
+		atirando = true;
 
 	}
 
