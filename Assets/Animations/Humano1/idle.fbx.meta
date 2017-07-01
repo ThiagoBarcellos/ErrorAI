@@ -1,23 +1,7 @@
 fileFormatVersion: 2
-guid: 3661c06d2504b774d95aa4c79959601d
-labels:
-- Architecture
-- Audio
-- Character
-- Concrete
-- Effect
-- Ground
-- Prop
-- Road
-- Sky
-- Terrain
-- Vegetation
-- Vehicle
-- Wall
-- Water
-- Weapon
-timeCreated: 1498223224
-licenseType: Pro
+guid: c131a14d73f7395438a56c6845f82e7b
+timeCreated: 1498922938
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -124,7 +108,7 @@ ModelImporter:
     7400012: body_low.001|body_lowAction.002
     7400014: body_low.001|CubeAction
     7400016: body_low.001|LampAction
-    7400018: RifleJump
+    7400018: RifleIdle
     9500000: //RootNode
     13700000: body_low.001
     13700002: Cube
@@ -150,18 +134,18 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: RifleJump
+      name: RifleIdle
       takeName: mixamo.com
-      firstFrame: 20
-      lastFrame: 68
+      firstFrame: 0
+      lastFrame: 63
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
-      cycleOffset: 10
+      cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 1
+      loopTime: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -292,7 +276,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
   importAnimation: 1
-  copyAvatar: 1
+  copyAvatar: 0
   humanDescription:
     serializedVersion: 2
     human: []
@@ -309,8 +293,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 94d1a3a70bd582d4bb72c605d6e49e9a,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
   additionalBone: 0

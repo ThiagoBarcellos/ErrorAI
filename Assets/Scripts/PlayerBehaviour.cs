@@ -16,11 +16,16 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
 	public int speed = -6;
+	//public float andando = -1f;
+	public bool atirando = false;
+	public Animator anim;
+	public bool pulou = false;
 
 	void Start () {
 		this.gameObject.transform.position = SpawnPoint1.transform.position;
 		rb = gameObject.GetComponent<Rigidbody> ();
 		esquerda = true;
+		anim.GetComponent<Animator> ();
 	}
 	
 	void Update () {
@@ -28,10 +33,18 @@ public class PlayerBehaviour : NetworkBehaviour {
 			return;
 		}*/
 
-			Cmdmovement ();
+		//anim.SetFloat("Andando", andando);
+		anim.SetBool("Pulando", pulou );
+		//anim.SetBool ("Atirando", atirando);
+
+
+		Cmdmovement ();
+		atirando = false;
 		if (Input.GetMouseButtonUp(0)) {
 			CmdFire ();
+
 		}
+
 	}
 
 
@@ -40,23 +53,26 @@ public class PlayerBehaviour : NetworkBehaviour {
 	{
 		var x = Input.GetAxis ("Horizontal") * Time.deltaTime;
 
+		//andando = 1f;
+
 		if (x > 0f && esquerda) {
 			Flip ();
 			speed = 6;
 			//Debug.Log(speed);
-			turn = false;
+			turn = true;
 		}
 
 		else if (x < 0f && !esquerda) {
 			Flip ();
 			speed = -6;
 			//Debug.Log(speed);
-			turn = true;
-
-
+			turn = false;
 		}
+
+
 			
-		transform.Translate (x, 0, 0);	
+		transform.Translate (0, 0, x);	
+
 
 		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0 || Input.GetKeyUp(KeyCode.UpArrow) && layertwo == false && layerone == true && changelayer == 0) {
 			layertwo = true;
@@ -71,18 +87,22 @@ public class PlayerBehaviour : NetworkBehaviour {
 
 		if (Input.GetKeyUp (KeyCode.Space) && CanJump == true) {
 			Debug.Log ("pulou");
-			rb.AddForce (Vector3.up * 5f, ForceMode.Impulse);
+			rb.AddForce (Vector3.up * 4f, ForceMode.Impulse);
+			pulou = true;
 		}
+		pulou = false;
 
 		while (layertwo && layerone == false && changelayer == 1) {
-			this.transform.Translate (0, 0, 0.8f);
+			this.transform.Translate (0.8f, 0, 0);
 			changelayer = 2;
 		}
 		while (layertwo == false && layerone && changelayer == 1) {
-			this.transform.Translate (0, 0, -0.8f);
+			this.transform.Translate (-0.8f, 0, 0);
 			changelayer = 0;
 		}
+
 	}
+
 
 	void Flip(){
 
@@ -107,13 +127,15 @@ public class PlayerBehaviour : NetworkBehaviour {
 		var bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 
 		// Add velocity to the bullet
-		bullet.GetComponent<Rigidbody>().velocity = bullet.transform.right * speed;
+		bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * speed;
 
 		// Spawn the bullet on the Clients
 		//NetworkServer.Spawn(bullet);
 
 		// Destroy the bullet after 2 seconds
 		Destroy(bullet, 2.0f);
+		//atirando = true;
+
 	}
 
 	#endregion

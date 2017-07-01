@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class NetworkManager : NetworkBehaviour {
 
-	NetworkIdentity NI = GetComponent<NetworkIdentity>();
+	//NetworkIdentity NI = GetComponent<NetworkIdentity>();
 
 	void Start () {
 		//NI.assetId = 1;
