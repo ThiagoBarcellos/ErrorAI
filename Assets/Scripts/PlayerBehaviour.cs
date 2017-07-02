@@ -30,6 +30,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public Animator anim;
 
 	void Start () {
+		this.GetComponentInChildren<TextMesh> ().text = pname;
 		this.transform.position = SpawnPoint1.transform.position;
 		rb = gameObject.GetComponent<Rigidbody> ();
 		esquerda = true;
@@ -39,7 +40,6 @@ public class PlayerBehaviour : NetworkBehaviour {
 	
 	void Update () {
 
-		//this.GetComponentInChildren<TextMesh> ().text = pname;
 		anim.SetBool ("atirando", atirando);
 		anim.SetBool ("pulou", pulando);
 		Cmdmovement ();
