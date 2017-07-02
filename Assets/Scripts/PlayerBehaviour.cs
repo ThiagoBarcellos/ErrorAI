@@ -6,6 +6,12 @@ using System.Threading;
 
 public class PlayerBehaviour : NetworkBehaviour {
 
+	[SyncVar]
+	public string pname = "Player";
+
+	[SyncVar]
+	public bool team = true; //true para humano
+
 	public GameObject SpawnPoint1;
 	private bool layerone = true;
 	private bool layertwo = false;
@@ -24,7 +30,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public Animator anim;
 
 	void Start () {
-		this.gameObject.transform.position = SpawnPoint1.transform.position;
+		this.transform.position = SpawnPoint1.transform.position;
 		rb = gameObject.GetComponent<Rigidbody> ();
 		esquerda = true;
 		anim.GetComponent<Animator> ();
@@ -32,9 +38,8 @@ public class PlayerBehaviour : NetworkBehaviour {
 
 	
 	void Update () {
-		/*if (!isLocalPlayer) {
-			return;
-		}*/
+
+		//this.GetComponentInChildren<TextMesh> ().text = pname;
 		anim.SetBool ("atirando", atirando);
 		anim.SetBool ("pulou", pulando);
 		Cmdmovement ();
@@ -64,11 +69,6 @@ public class PlayerBehaviour : NetworkBehaviour {
 			speed = -6;
 			turn = false;
 		}
-
-
-			
-		//transform.Translate (0, 0, x);	
-
 
 		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0 || Input.GetKeyUp(KeyCode.UpArrow) && layertwo == false && layerone == true && changelayer == 0) {
 			layertwo = true;

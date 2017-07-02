@@ -11,7 +11,12 @@ namespace Prototype.NetworkLobby
     //Any LobbyHook can then grab it and pass those value to the game player prefab (see the Pong Example in the Samples Scenes)
     public class LobbyPlayer : NetworkLobbyPlayer
     {
+
+		//public Sprite humano;
+		//public Sprite robo;
+
         static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
+		//static Image[] imagem = new Image[]{};
         //used on server to avoid assigning the same color to two player
         static List<int> _colorInUse = new List<int>();
 
@@ -29,6 +34,8 @@ namespace Prototype.NetworkLobby
         public string playerName = "";
         [SyncVar(hook = "OnMyColor")]
         public Color playerColor = Color.white;
+		[SyncVar(hook = "OnMyTeam")]
+		public bool playerTeam = true;//True se humano
 
         public Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         public Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
@@ -64,6 +71,7 @@ namespace Prototype.NetworkLobby
             //will be created with the right value currently on server
             OnMyName(playerName);
             OnMyColor(playerColor);
+			OnMyTeam (playerTeam);
         }
 
         public override void OnStartAuthority()
@@ -194,6 +202,11 @@ namespace Prototype.NetworkLobby
             playerColor = newColor;
             colorButton.GetComponent<Image>().color = newColor;
         }
+
+		public void OnMyTeam(bool team){
+			playerTeam = team;
+
+		}
 
         //===== UI Handler
 
