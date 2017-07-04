@@ -30,7 +30,8 @@ public class GameManager : NetworkBehaviour {
 
 	[Client]
 	void Update () {
-		if (Human1 == 0) {
+		if (Human1 == 0)
+		{
 			Respawn ();
 			if (able) {
 				Debug.Log ("Morreu");

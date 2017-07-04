@@ -30,6 +30,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public Animator anim;
 
 	void Start () {
+		this.transform.Rotate (0f,-90f,0f);
 		this.GetComponentInChildren<TextMesh> ().text = pname;
 		this.transform.position = SpawnPoint1.transform.position;
 		rb = gameObject.GetComponent<Rigidbody> ();
@@ -70,12 +71,12 @@ public class PlayerBehaviour : NetworkBehaviour {
 			turn = false;
 		}
 
-		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0 || Input.GetKeyUp(KeyCode.UpArrow) && layertwo == false && layerone == true && changelayer == 0) {
+		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0 && this.transform.position.y > -3|| Input.GetKeyUp(KeyCode.UpArrow) && layertwo == false && layerone == true && changelayer == 0 && this.transform.position.y > -3) {
 			layertwo = true;
 			layerone = false;
 			changelayer = 1;
 		}
-		if (Input.GetKeyUp (KeyCode.S) && layerone == false && layertwo == true && changelayer == 2 || Input.GetKeyUp(KeyCode.DownArrow) && layerone == false && layertwo == true && changelayer == 2) {
+		if (Input.GetKeyUp (KeyCode.S) && layerone == false && layertwo == true && changelayer == 2 && this.transform.position.y > -3|| Input.GetKeyUp(KeyCode.DownArrow) && layerone == false && layertwo == true && changelayer == 2 && this.transform.position.y > -3) {
 			layerone = true;
 			layertwo = false;
 			changelayer = 1;
