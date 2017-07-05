@@ -12,12 +12,9 @@ namespace Prototype.NetworkLobby
     public class LobbyPlayer : NetworkLobbyPlayer
     {
 
-		//public Sprite humano;
-		//public Sprite robo;
-
-        static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
-		//static Image[] imagem = new Image[]{};
-        //used on server to avoid assigning the same color to two player
+        //static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
+		static Color[] Colors = new Color[] { Color.cyan, Color.green};
+		//used on server to avoid assigning the same color to two player
         static List<int> _colorInUse = new List<int>();
 
         public Button colorButton;
@@ -34,8 +31,8 @@ namespace Prototype.NetworkLobby
         public string playerName = "";
         [SyncVar(hook = "OnMyColor")]
         public Color playerColor = Color.white;
-		[SyncVar(hook = "OnMyTeam")]
-		public bool playerTeam = true;//True se humano
+		[SyncVar]
+		public bool playerTeam;//true se humano
 
         public Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         public Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
@@ -71,7 +68,7 @@ namespace Prototype.NetworkLobby
             //will be created with the right value currently on server
             OnMyName(playerName);
             OnMyColor(playerColor);
-			OnMyTeam (playerTeam);
+			//OnMyTeam (playerTeam);
         }
 
         public override void OnStartAuthority()
@@ -204,8 +201,16 @@ namespace Prototype.NetworkLobby
         }
 
 		public void OnMyTeam(bool team){
-			playerTeam = team;
-
+			if (playerColor == Color.cyan) {
+				team = true;
+				//OnMyTeam = 0;
+				Debug.Log (team);
+			}
+			if (playerColor == Color.green) {
+				team = false;
+				//OnMyTeam = 1;
+				Debug.Log (team);
+			}
 		}
 
         //===== UI Handler
@@ -296,6 +301,15 @@ namespace Prototype.NetworkLobby
             }
 
             playerColor = Colors[idx];
+			if (Colors[idx] == Color.cyan) {
+				Debug.Log (playerTeam);
+				playerTeam = true;
+			}
+			if(Colors[idx] == Color.green) 
+			{
+				Debug.Log (Colors[idx]);
+				playerTeam = false;
+			}
         }
 
         [Command]

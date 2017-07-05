@@ -10,9 +10,10 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public string pname = "Player";
 
 	[SyncVar]
-	public bool team = true; //true para humano
+	public bool team; //true para humano
 
 	public GameObject SpawnPoint1;
+	public GameObject SpawnPoint2;
 	private bool layerone = true;
 	private bool layertwo = false;
 	private int changelayer = 0;
@@ -33,9 +34,14 @@ public class PlayerBehaviour : NetworkBehaviour {
 
 
 	void Start () {
+		if (team) {
+			this.transform.position = SpawnPoint1.transform.position;
+		}
+		else{
+			this.transform.position = SpawnPoint2.transform.position;
+		}
 		this.transform.Rotate (0f,-90f,0f);
 		this.GetComponentInChildren<TextMesh> ().text = pname;
-		this.transform.position = SpawnPoint1.transform.position;
 		rb = gameObject.GetComponent<Rigidbody> ();
 		esquerda = true;
 		anim.GetComponent<Animator> ();
@@ -86,6 +92,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 		} 
 
 		if (Input.GetKeyUp (KeyCode.Space) && CanJump == true) {
+			//rb.freezeRotation = true;
 			rb.AddForce (Vector3.up * 4f, ForceMode.Impulse);
 			pulando = true;
 		}
@@ -109,16 +116,19 @@ public class PlayerBehaviour : NetworkBehaviour {
 
 	void OnTriggerEnter(Collider coll)
 	{
-		CanJump = true;
-		pulando = false;
-
+		/*CanJump = true;
+		pulando = false;*/
 		if (coll.gameObject.tag == "Vacuo") {
 			vacuo = true;
+			CanJump = true;
+			pulando = false;
 			Debug.Log ("Aí não pode");
 		}
 
 		else {
 			vacuo = false;
+			CanJump = true;
+			pulando = false;
 		}
 		//Debug.Log ("Chão");
 	}
