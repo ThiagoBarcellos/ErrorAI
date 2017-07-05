@@ -29,6 +29,9 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public bool atirando = false;
 	public Animator anim;
 
+	public bool vacuo = false;
+
+
 	void Start () {
 		this.transform.Rotate (0f,-90f,0f);
 		this.GetComponentInChildren<TextMesh> ().text = pname;
@@ -71,7 +74,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 			turn = false;
 		}
 
-		if (Input.GetKeyUp (KeyCode.W) && layertwo == false && layerone == true && changelayer == 0 && this.transform.position.y > -3|| Input.GetKeyUp(KeyCode.UpArrow) && layertwo == false && layerone == true && changelayer == 0 && this.transform.position.y > -3) {
+		if (Input.GetKeyUp (KeyCode.W) && vacuo == false && layertwo == false && layerone == true && changelayer == 0 && this.transform.position.y > -3|| Input.GetKeyUp(KeyCode.UpArrow) && vacuo == false && layertwo == false && layerone == true && changelayer == 0 && this.transform.position.y > -3) {
 			layertwo = true;
 			layerone = false;
 			changelayer = 1;
@@ -97,8 +100,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 		}
 
 	}
-
-
+		
 	void Flip(){
 
 		esquerda = !esquerda;
@@ -109,8 +111,20 @@ public class PlayerBehaviour : NetworkBehaviour {
 	{
 		CanJump = true;
 		pulando = false;
+
+		if (coll.gameObject.tag == "Vacuo") {
+			vacuo = true;
+			Debug.Log ("Aí não pode");
+		}
+
+		else {
+			vacuo = false;
+		}
 		//Debug.Log ("Chão");
 	}
+
+
+
 	void OnTriggerExit(Collider coll)
 	{
 		CanJump = false;
@@ -135,4 +149,4 @@ public class PlayerBehaviour : NetworkBehaviour {
 	}
 
 	#endregion
-}
+	}
