@@ -10,5 +10,6 @@ public class NetworkLobbyHook : LobbyHook
 		PlayerBehaviour localPlayer = gamePlayer.GetComponent<PlayerBehaviour>();
 
 		localPlayer.pname = lobby.playerName;
+		localPlayer.team = lobby.playerTeam;
 	}
 }
