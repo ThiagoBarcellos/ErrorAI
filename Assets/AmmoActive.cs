@@ -13,6 +13,7 @@ public class AmmoActive : MonoBehaviour {
 	void Update () {
         if (this.enabled = false) {
             Reload();
+			this.enabled = true;
         }
 	}
 

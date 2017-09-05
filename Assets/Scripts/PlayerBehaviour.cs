@@ -48,6 +48,7 @@ public class PlayerBehaviour : NetworkBehaviour {
 		rb = gameObject.GetComponent<Rigidbody> ();
 		esquerda = true;
 		anim.GetComponent<Animator> ();
+		currbalas = nbalas;
 	}
 
 	
@@ -65,10 +66,12 @@ public class PlayerBehaviour : NetworkBehaviour {
             if (team)
             {
                 this.transform.position = SpawnPoint1.transform.position;
+				currbalas = nbalas;
             }
             else
             {
                 this.transform.position = SpawnPoint2.transform.position;
+				currbalas = nbalas;
             }
             vida = true;
         }

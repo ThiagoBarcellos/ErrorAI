@@ -16,6 +16,6 @@ public class Morte : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.)
-    }
+        
+	}
 }
