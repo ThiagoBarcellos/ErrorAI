@@ -24,6 +24,9 @@ public class PlayerBehaviour : NetworkBehaviour {
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
 	public int speed = -6;
+    public static bool vida = true;
+    public int nbalas = 64;
+    public int currbalas = 64;
 
 	public bool pulando = false;
 	public float walkSpeed;
@@ -58,7 +61,17 @@ public class PlayerBehaviour : NetworkBehaviour {
 			CmdFire ();	
 
 		}
-
+        if (!vida) {
+            if (team)
+            {
+                this.transform.position = SpawnPoint1.transform.position;
+            }
+            else
+            {
+                this.transform.position = SpawnPoint2.transform.position;
+            }
+            vida = true;
+        }
 	}
 		
 	#region movement
@@ -130,7 +143,14 @@ public class PlayerBehaviour : NetworkBehaviour {
 			CanJump = true;
 			pulando = false;
 		}
-		//Debug.Log ("Chão");
+        //Debug.Log ("Chão");
+        if (coll.gameObject.tag == "Ammo") {
+            currbalas += 12;
+            coll.gameObject.SetActive(false);
+        }
+        if (coll.gameObject.tag == "Morte") {
+            vida = false;
+        }
 	}
 
 
@@ -143,19 +163,22 @@ public class PlayerBehaviour : NetworkBehaviour {
 
 	void CmdFire()
 	{
-		// Create the Bullet from the Bullet Prefab
-		var bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
+        if (currbalas > 0)
+        {
+            // Create the Bullet from the Bullet Prefab
+            var bullet = (GameObject)Instantiate(bulletPrefab, bulletSpawn.position, bulletSpawn.rotation);
 
-		// Add velocity to the bullet
-		bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * speed;
+            // Add velocity to the bullet
+            bullet.GetComponent<Rigidbody>().velocity = bullet.transform.forward * speed;
 
-		// Spawn the bullet on the Clients
-		//NetworkServer.Spawn(bullet);
+            // Spawn the bullet on the Clients
+            //NetworkServer.Spawn(bullet);
 
-		// Destroy the bullet after 2 seconds
-		Destroy(bullet, 2.0f);
-		atirando = true;
-
+            // Destroy the bullet after 2 seconds
+            Destroy(bullet, 2.0f);
+            atirando = true;
+            currbalas -= 1;
+        }
 	}
 
 	#endregion
